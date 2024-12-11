@@ -1,8 +1,7 @@
 import random
 
 from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QPushButton, QLabel, QListWidget, QListWidgetItem, QRadioButton, QButtonGroup
-)
+    QWidget, QVBoxLayout, QPushButton, QLabel, QListWidget, QListWidgetItem, QRadioButton, QButtonGroup)
 
 from db.database import get_test_questions
 from db.database import get_test_results_from_db, save_test_result_to_db
