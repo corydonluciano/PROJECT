@@ -2,7 +2,7 @@ import sqlite3
 
 
 def create_database():
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS articles (
@@ -16,7 +16,7 @@ def create_database():
     conn.close()
 
 def insert_article_with_image(title, content, image_path):
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     with open(image_path, 'rb') as file:
         image_data = file.read()
@@ -25,7 +25,7 @@ def insert_article_with_image(title, content, image_path):
     conn.close()
 
 def get_article_by_id(article_id):
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('SELECT title, content, image FROM articles WHERE id = ?', (article_id,))
     article = cursor.fetchone()
@@ -33,7 +33,7 @@ def get_article_by_id(article_id):
     return article
 
 def create_test_tables():
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS test_questions (
@@ -55,14 +55,14 @@ def create_test_tables():
     conn.close()
 
 def add_test_question(tracker_type, question):
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('INSERT INTO test_questions (tracker_type, question) VALUES (?, ?)', (tracker_type, question))
     conn.commit()
     conn.close()
 
 def get_test_questions(tracker_type):
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('SELECT question FROM test_questions WHERE tracker_type = ?', (tracker_type,))
     questions = cursor.fetchall()
@@ -70,14 +70,14 @@ def get_test_questions(tracker_type):
     return [q[0] for q in questions]
 
 def save_test_result_to_db(tracker_type, result_text, score):
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('INSERT INTO test_history (tracker_type, result_text, score) VALUES (?, ?, ?)', (tracker_type, result_text, score))
     conn.commit()
     conn.close()
 
 def get_test_results_from_db():
-    conn = sqlite3.connect('db/articles.db')
+    conn = sqlite3.connect('articles.db')
     cursor = conn.cursor()
     cursor.execute('SELECT tracker_type, result_text, score, timestamp FROM test_history ORDER BY timestamp DESC')
     results = cursor.fetchall()
