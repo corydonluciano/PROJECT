@@ -10,7 +10,7 @@
  Сначала клонируйте репозиторий на свой локальный компьютер:
 
  
-   git clone https://github.com/corydonluciano/PROJECT.git
+  ``` git clone https://github.com/corydonluciano/PROJECT.git```
 
    
  Затем перейдите в каталог проекта
