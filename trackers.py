@@ -4,8 +4,8 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QPushButton, QLabel, QListWidget, QListWidgetItem, QRadioButton, QButtonGroup
 )
 
-from database import get_test_questions
-from database import get_test_results_from_db, save_test_result_to_db
+from db.database import get_test_questions
+from db.database import get_test_results_from_db, save_test_result_to_db
 
 
 class TrackerPage(QWidget):
