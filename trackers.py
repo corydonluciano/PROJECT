@@ -79,8 +79,11 @@ class TrackerWindow(QWidget):
         self.create_ui()
 
     def get_random_questions(self):
-        """Получает 5 случайных вопросов из базы данных."""
-        all_questions = get_test_questions(self.tracker_type)
+        """Получает 5 случайных вопросов из базы данных по тегу для трекера."""
+        if self.tracker_type == "Настроение":
+            all_questions = get_test_questions("Счастье")  # Получаем вопросы по тегу "Счастье"
+        else:
+            all_questions = get_test_questions(self.tracker_type)
         return random.sample(all_questions, 5) if len(all_questions) >= 5 else all_questions
 
     def create_ui(self):
@@ -117,24 +120,37 @@ class TrackerWindow(QWidget):
         self.layout.addWidget(close_button)
 
     def calculate_score(self):
-        """Вычисляет итоговый балл и выводит результат стресса."""
+        """Вычисляет итоговый балл и выводит результат настроения."""
         total_score = 0
 
         for radio_button, score in self.radio_buttons:
             if radio_button.isChecked():
                 total_score += score
 
-        # Оценка стресса по баллам
-        if total_score >= 4:
-            result_text = "Высокий уровень стресса"
-        elif total_score >= 3:
-            result_text = "Повышенный уровень стресса"
-        elif total_score >= 2:
-            result_text = "Умеренный уровень стресса"
-        elif total_score >= 1:
-            result_text = "Лёгкий уровень стресса"
-        else:
-            result_text = "Нет стресса"
+        # Если это тест на стресс
+        if self.tracker_type == "Стресс":
+            if total_score >= 4:
+                result_text = "Высокий уровень стресса"
+            elif total_score >= 3:
+                result_text = "Повышенный уровень стресса"
+            elif total_score >= 2:
+                result_text = "Умеренный уровень стресса"
+            elif total_score >= 1:
+                result_text = "Лёгкий уровень стресса"
+            else:
+                result_text = "Нет стресса"
+        # Если это тест на настроение (счастье)
+        elif self.tracker_type == "Настроение":
+            if total_score >= 4:
+                result_text = "Очень позитивное настроение"
+            elif total_score >= 3:
+                result_text = "Позитивное настроение"
+            elif total_score >= 2:
+                result_text = "Нейтральное настроение"
+            elif total_score >= 1:
+                result_text = "Негативное настроение"
+            else:
+                result_text = "Очень негативное настроение"
 
         # Сохраняем результат в базу данных
         self.result_callback(self.tracker_type, result_text, total_score)
@@ -142,3 +158,4 @@ class TrackerWindow(QWidget):
         # Показываем результат пользователю
         result_label = QLabel(f"Ваш результат: {result_text} | Баллы: {total_score:.1f}")
         self.layout.addWidget(result_label)
+
