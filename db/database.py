@@ -85,6 +85,21 @@ def get_test_results_from_db():
     conn.close()
     return results
 
+def create_notes_table_in_articles_db():
+    """Создает таблицу для заметок в базе данных articles.db."""
+    conn = sqlite3.connect('db/articles.db')  # Подключаемся к базе данных articles.db
+    cursor = conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        text TEXT NOT NULL
+    )''')
+    conn.commit()
+    conn.close()
+
+
+
+
 # Создаем таблицы (если еще не созданы)
 # create_test_tables()
 

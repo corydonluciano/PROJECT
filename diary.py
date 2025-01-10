@@ -1,10 +1,12 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QListWidget, QHBoxLayout
 from PyQt5.QtGui import QFont
+import sqlite3
 
 class DiaryPage(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle("Ваши заметки")
         layout = QVBoxLayout(self)
 
         # Заголовок страницы
@@ -40,15 +42,47 @@ class DiaryPage(QWidget):
 
         layout.addStretch()
 
+        # Загрузка заметок из базы данных
+        self.load_notes()
+
     def add_note(self):
-        """Добавляет новую заметку в список."""
+        """Добавляет новую заметку в базу данных и список."""
         note_text = self.note_input.text().strip()
         if note_text:
+            # Добавляем заметку в базу данных articles.db
+            conn = sqlite3.connect('articles.db')  # Подключаемся к базе данных articles.db
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO notes (text) VALUES (?)", (note_text,))
+            conn.commit()
+            conn.close()
+
+            # Добавляем заметку в список
             self.notes_list.addItem(note_text)
             self.note_input.clear()  # Очищаем поле ввода после добавления заметки
 
     def delete_note(self):
-        """Удаляет выбранную заметку из списка."""
+        """Удаляет выбранную заметку из базы данных и списка."""
         selected_item = self.notes_list.currentItem()
         if selected_item:
+            note_text = selected_item.text()
+
+            # Удаляем заметку из базы данных
+            conn = sqlite3.connect('articles.db')  # Подключаемся к базе данных articles.db
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM notes WHERE text = ?", (note_text,))
+            conn.commit()
+            conn.close()
+
+            # Удаляем заметку из списка
             self.notes_list.takeItem(self.notes_list.row(selected_item))
+
+    def load_notes(self):
+        """Загружает заметки из базы данных в список."""
+        conn = sqlite3.connect('articles.db')  # Подключаемся к базе данных articles.db
+        cursor = conn.cursor()
+        cursor.execute("SELECT text FROM notes")
+        notes = cursor.fetchall()
+        conn.close()
+
+        for note in notes:
+            self.notes_list.addItem(note[0])  # Добавляем каждую заметку в список
