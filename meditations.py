@@ -102,6 +102,7 @@ class MeditationTimerWindow(QWidget):
         layout = QVBoxLayout(self)
 
         # Таймер
+        self.time_duration = duration  # Изначальное время(параметр duration)
         self.time_left = duration  # Время в секундах (параметр duration)
         self.timer_label = QLabel(f"Оставшееся время: {self.time_left} секунд")
         self.timer_label.setFont(QFont("Arial", 18))
@@ -153,7 +154,7 @@ class MeditationTimerWindow(QWidget):
         self.timer_label.setText(f"Оставшееся время: {self.time_left} секунд")
 
         # Обновляем текст в зависимости от времени медитации
-        if self.time_left == 30:  # Середина медитации
+        if self.time_left == self.time_duration/2:  # Середина медитации
             self.text_label.setText(
                 "Продолжай дышать глубоко и ровно. Если мысли начинают блуждать, мягко верни внимание к дыханию. Ощущай каждый вдох и выдох, как они наполняют тебя энергией и спокойствием. Позволь своему телу быть тяжелым и неподвижным, словно оно сливается с землей под тобой.")
         elif self.time_left == 0:  # Конец медитации
