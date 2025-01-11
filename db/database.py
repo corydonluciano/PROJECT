@@ -85,9 +85,8 @@ def get_test_results_from_db():
     conn.close()
     return results
 
-def create_notes_table_in_articles_db():
-    """Создает таблицу для заметок в базе данных articles.db."""
-    conn = sqlite3.connect('db/articles.db')  # Подключаемся к базе данных articles.db
+def create_notes_table():
+    conn = sqlite3.connect('db/articles.db')
     cursor = conn.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS notes (
@@ -97,6 +96,42 @@ def create_notes_table_in_articles_db():
     conn.commit()
     conn.close()
 
+# Добавляем новую заметку в базу данных
+def add_note_to_db(note_text):
+    conn = sqlite3.connect('db/articles.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO notes (text) VALUES (?)", (note_text,))
+    conn.commit()
+    conn.close()
+
+# Удаляем заметку из базы данных
+def delete_note_from_db(note_text):
+    conn = sqlite3.connect('db/articles.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM notes WHERE text = ?", (note_text,))
+    conn.commit()
+    conn.close()
+
+# Обновляем заметку в базе данных по ID
+def update_note_in_db(note_id, new_text):
+    try:
+        conn = sqlite3.connect('db/articles.db')
+        cursor = conn.cursor()
+        cursor.execute("UPDATE notes SET text = ? WHERE id = ?", (new_text, note_id))
+        conn.commit()
+        conn.close()
+        print(f"Заметка с ID {note_id} успешно обновлена.")
+    except sqlite3.Error as e:
+        print(f"Ошибка при обновлении заметки: {e}")
+
+# Возвращаем все заметки из базы данных
+def get_all_notes_from_db():
+    conn = sqlite3.connect('db/articles.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, text FROM notes")
+    notes = cursor.fetchall()
+    conn.close()
+    return notes
 
 
 

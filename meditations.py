@@ -102,7 +102,7 @@ class MeditationTimerWindow(QWidget):
         layout = QVBoxLayout(self)
 
         # Таймер
-        self.time_duration = duration  # Изначальное время(параметр duration)
+        self.time_duration = duration  # Изначальное время (параметр duration)
         self.time_left = duration  # Время в секундах (параметр duration)
         self.timer_label = QLabel(f"Оставшееся время: {self.time_left} секунд")
         self.timer_label.setFont(QFont("Arial", 18))
@@ -110,7 +110,8 @@ class MeditationTimerWindow(QWidget):
 
         # Начальный текст
         self.text_label = QLabel(
-            "Закрой глаза и сделай глубокий вдох через нос, задержи дыхание на несколько секунд, затем медленно выдохни через рот. Почувствуй, как тело расслабляется, а ум успокаивается. Позволь себе отпустить все мысли и заботы этого дня. Ты здесь, в этом моменте, и ничто другое не имеет значения.")
+            "Закрой глаза и сделай глубокий вдох через нос, задержи дыхание на несколько секунд, затем медленно выдохни через рот. Почувствуй, как тело расслабляется, а ум успокаивается. Позволь себе отпустить все мысли и заботы этого дня. Ты здесь, в этом моменте, и ничто другое не имеет значения."
+        )
         self.text_label.setFont(QFont("Arial", 12))
         self.text_label.setWordWrap(True)  # Разрешаем перенос текста
         layout.addWidget(self.text_label)
@@ -118,7 +119,8 @@ class MeditationTimerWindow(QWidget):
         # Кнопка для старта
         self.start_button = QPushButton("Начать медитацию")
         self.start_button.setStyleSheet(
-            "padding: 10px; margin: 5px; background-color: #28A745; color: white; border-radius: 5px;")
+            "padding: 10px; margin: 5px; background-color: #28A745; color: white; border-radius: 5px;"
+        )
         self.start_button.clicked.connect(self.start_timer)
         layout.addWidget(self.start_button)
 
@@ -154,21 +156,29 @@ class MeditationTimerWindow(QWidget):
         self.timer_label.setText(f"Оставшееся время: {self.time_left} секунд")
 
         # Обновляем текст в зависимости от времени медитации
-        if self.time_left == self.time_duration/2:  # Середина медитации
+        if self.time_left == self.time_duration / 2:  # Середина медитации
             self.text_label.setText(
-                "Продолжай дышать глубоко и ровно. Если мысли начинают блуждать, мягко верни внимание к дыханию. Ощущай каждый вдох и выдох, как они наполняют тебя энергией и спокойствием. Позволь своему телу быть тяжелым и неподвижным, словно оно сливается с землей под тобой.")
+                "Продолжай дышать глубоко и ровно. Если мысли начинают блуждать, мягко верни внимание к дыханию. Ощущай каждый вдох и выдох, как они наполняют тебя энергией и спокойствием. Позволь своему телу быть тяжелым и неподвижным, словно оно сливается с землей под тобой."
+            )
         elif self.time_left == 0:  # Конец медитации
             self.timer.stop()
-            self.timer_label.setText(f"Медитация закончилась")
+            self.timer_label.setText("Медитация закончилась")
             self.text_label.setText(
-                "Постепенно возвращайся к осознанию своего тела. Сделай еще пару глубоких вдохов и выдохов. Когда будешь готов, открой глаза. Посмотри вокруг себя с новым восприятием, почувствуй благодарность за этот момент тишины и покоя. Пусть это состояние останется с тобой на протяжении всего дня.")
+                "Постепенно возвращайся к осознанию своего тела. Сделай еще пару глубоких вдохов и выдохов. Когда будешь готов, открой глаза. Посмотри вокруг себя с новым восприятием, почувствуй благодарность за этот момент тишины и покоя. Пусть это состояние останется с тобой на протяжении всего дня."
+            )
             pygame.mixer.music.stop()  # Останавливаем музыку
+            self.start_button.setVisible(False)  # Скрываем кнопку
             self.show_feedback_dialog()  # Показать диалоговое окно
 
     def show_feedback_dialog(self):
         """Показывает диалоговое окно с вопросом."""
-        reply = QMessageBox.question(self, "Вы молодец!", "Вам понравилась медитация?",
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        reply = QMessageBox.question(
+            self,
+            "Вы молодец!",
+            "Вам понравилась медитация?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.Yes,
+        )
 
         if reply == QMessageBox.Yes:
             print("Пользователь сказал 'Да'")
