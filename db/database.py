@@ -96,7 +96,7 @@ def create_notes_table():
     conn.commit()
     conn.close()
 
-# Добавляем новую заметку в базу данных
+
 def add_note_to_db(note_text):
     conn = sqlite3.connect('db/articles.db')
     cursor = conn.cursor()
@@ -104,7 +104,7 @@ def add_note_to_db(note_text):
     conn.commit()
     conn.close()
 
-# Удаляем заметку из базы данных
+
 def delete_note_from_db(note_text):
     conn = sqlite3.connect('db/articles.db')
     cursor = conn.cursor()
@@ -112,7 +112,7 @@ def delete_note_from_db(note_text):
     conn.commit()
     conn.close()
 
-# Обновляем заметку в базе данных по ID
+
 def update_note_in_db(note_id, new_text):
     try:
         conn = sqlite3.connect('db/articles.db')
@@ -124,7 +124,7 @@ def update_note_in_db(note_id, new_text):
     except sqlite3.Error as e:
         print(f"Ошибка при обновлении заметки: {e}")
 
-# Возвращаем все заметки из базы данных
+
 def get_all_notes_from_db():
     conn = sqlite3.connect('db/articles.db')
     cursor = conn.cursor()
@@ -134,6 +134,22 @@ def get_all_notes_from_db():
     return notes
 
 
+def get_all_articles():
+    conn = sqlite3.connect('db/articles.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT title FROM articles')
+    articles = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return articles
+
+
+def get_article_details(title):
+    conn = sqlite3.connect('db/articles.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT content, image FROM articles WHERE title = ?', (title,))
+    article_data = cursor.fetchone()
+    conn.close()
+    return article_data
 
 # Создаем таблицы (если еще не созданы)
 # create_test_tables()
@@ -167,3 +183,4 @@ def get_all_notes_from_db():
 #     add_test_question("Стресс", question)
 #
 # print("Вопросы для теста на стресс успешно добавлены в базу данных.")
+
