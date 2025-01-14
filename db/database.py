@@ -151,6 +151,7 @@ def get_article_details(title):
     conn.close()
     return article_data
 
+
 # Создаем таблицы (если еще не созданы)
 # create_test_tables()
 

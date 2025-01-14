@@ -124,12 +124,12 @@ class MainWindow(QMainWindow):
     def darken_button_color(self, style):
 
         import re
-        color_match = re.search(r'background-color: (\#\w+);', style)
+        color_match = re.search(r'background-color: (#\w+);', style)
         if color_match:
             color = color_match.group(1)
-            # Преобразуем цвет в RGB
+
             r, g, b = int(color[1:3], 16), int(color[3:5], 16), int(color[5:7], 16)
-            # Темним цвет
+
             r = max(r - 30, 0)
             g = max(g - 30, 0)
             b = max(b - 30, 0)
